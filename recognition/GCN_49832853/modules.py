@@ -37,3 +37,22 @@ class GCN(nn.Module):
 
         # Return raw classification scores
         return x
+
+if __name__ == "__main__":
+    from dataset import load_facebook
+
+    data = load_facebook()
+
+    model = GCN(
+        num_features=data.num_node_features,
+        num_classes=int(data.y.max().item()) + 1
+    )
+
+    model.eval()
+
+    with torch.no_grad():
+        output = model(data.x, data.edge_index)
+
+    print(model)
+    print("Output shape:", output.shape)
+    print("Predicted classes:", output.argmax(dim=1)[:10])
