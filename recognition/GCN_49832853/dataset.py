@@ -1,9 +1,13 @@
+from pathlib import Path
 import numpy as np
 import torch
 from torch_geometric.data import Data
 
+BASE_DIR = Path(__file__).resolve().parent
+DATA_PATH = BASE_DIR / "data" / "facebook.npz"
 
-def load_facebook(path="data/facebook.npz"):
+
+def load_facebook(path=DATA_PATH):
     with np.load(path, allow_pickle=False) as npz:
         x = torch.tensor(npz["X"], dtype=torch.float32)
 
