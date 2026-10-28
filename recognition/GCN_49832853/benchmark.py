@@ -1,9 +1,13 @@
 
+import os
 from pathlib import Path
 import time
 
 import numpy as np
+import psutil
 import torch
+import os
+import psutil
 
 from dataset import load_facebook, split_nodes
 from modules import GCN, MLP
@@ -99,6 +103,14 @@ def profile_model(name, model, data):
     )
     print(
         f"Mean CPU inference: {np.mean(times):.2f} ms"
+    )
+
+    process = psutil.Process(os.getpid())
+    memory = process.memory_info()
+
+    print(
+        f"Process peak RAM: "
+        f"{memory.peak_wset / (1024 ** 2):.2f} MB"
     )
 
 
