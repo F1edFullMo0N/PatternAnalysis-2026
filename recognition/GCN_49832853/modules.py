@@ -38,6 +38,25 @@ class GCN(nn.Module):
         # Return raw classification scores
         return x
 
+
+class MLP(nn.Module):
+    def __init__(self, num_features, num_classes,
+                 hidden_channels=64, dropout=0.5):
+        super().__init__()
+
+        self.fc1 = nn.Linear(num_features, hidden_channels)
+        self.fc2 = nn.Linear(hidden_channels, num_classes)
+        self.dropout = dropout
+
+    def forward(self, x, edge_index=None):
+        x = self.fc1(x)
+        x = F.relu(x)
+        x = F.dropout(
+            x, p=self.dropout, training=self.training
+        )
+        x = self.fc2(x)
+        return x
+
 if __name__ == "__main__":
     from dataset import load_facebook
 
